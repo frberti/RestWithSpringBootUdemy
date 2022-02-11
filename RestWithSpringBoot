@@ -1,0 +1,126 @@
+WebServices:
+Aplicação interoperável hospedada que pode ser acessada pelo protocolo HTTP.
+São legíveis para máquinas ou outro sistemas.
+Podem ser contruídos em partes/componentes, que permitem ser utilizados e reaproveitados (reutilização de código por diversos clients) conforme necessidade do momento.
+Permite a comunicação via HTTP entre cliente/servidor, possibilitando interoperabilidade, ou seja, possibilita a atuação em conjunto de dois sistemas diferentes aproveitando o mesmo código/lógica, com baixo acoplamento/dependência.
+Em resumo, são "pedaços de software" que são disponibilizados e consumidos via HTTP usando diferentes tipos de clients.
+Surgiram com a necessidade de integração de diferentes departamentos permitindo o compartilhamento das informações entre eles.
+
+REST:
+Estado representacional de transferência.
+Modelo arquiterural de software utilizado na integração de sistemas distribuídos.
+Cliente e Servidor separados;
+Servidor Stateless, cada request contém todas informações necessárias;
+Cacheable;
+Interface Uniforme:
+	Identificação de recursos por URI;
+	Manipulação de recursos através de sua representação;
+	Mensagens auto descritivas;
+	HATEOAS
+Sistema em camadas: suporta balanceamento de carga, proxies, firewalls. Permite inserção de tecnologias entre client/server.
+Código sob demanda.
+
+Faz chamadas unicamente em HTTP via URL PATH e suporta diversos formatos de arquivo para enviar e receber dados (client/server), sem necessidade de envelopamento:
+JSON
+XML
+YML
+CSV
+TXT
+IMAGENS
+HTML
+PDF
+BINARIO
+Os arquivos que são trafegados consumem menos memória, menos recurso de processamento e possui códido enxuto.
+Fácil de se consumir um serviço através de JavaScript.
+
+
+Request / Response
+
+Aplicações clients que podem ser executadas em um smartphone, tablet, computador, etc, fazem as requests para um server, que por sua vez processa a informação e devolve um response, através dos protocolos HTTP.
+
+Resquest:
+Request Message Header (Cabeçalho), é composto de Request Line e Request Header.
+Request Body: contêm os parâmetros.
+
+Respose:
+Devolução do resultado do processamento da request enviada.
+DEvolve informações no Response Header, como:
+Status code;
+Data;
+Tipo de conteúdo e etc.
+E um Response message body: como um conteúdo HTML por exemplo.
+
+Parâmetros:
+
+Path Params: São parâmetros de URL que são obrigatórios. Caso não seja definido nenhum valor, vai gerar um erro de validação ou a request será direcionada para outra operação similar que utiliza o mesmo verbo.
+Por exemplo, em uma URL com os parâmetros de paginação, sort(asc), pageSize(10) e currentPage(1) deverão ser informados e separados por barra:
+request/asc/10/1. É mais comum serem utilizados como parâmetros de busca.
+
+Query Params: Similares aos citados acima, porém não obrigatórios. São informados através de ?, como por exemplo: 
+request?firstName=Francisco&lastName=Berti&otherParam=value.
+
+Header Params: Parâmetros que são enviados no header da request, como por exemplo o o tipo de arquivo que é aceito, content type, authorization e etc.
+
+Body Params: Parâmetros enviados no Body da Request em JSON, por exemplo, e são muito utilizados para persistência de informações POST, PUT e PATCH.
+
+
+Status Codes:
+
+É a forma que a nossa api responde aos clients sobre o que ocorreu durante o processamento de uma request:
+1xx
+2xx Sucesso
+	200 ok
+	201 created
+	202 accepted
+	204 no content
+
+3xx Redirecionamento
+4xx Erros de client
+	400 bad request - operação que não existe, um endereço errado, por exemplo
+	401 unauthorized - quando o client faz uma request para um endpoint ao qual ele nao tem autorização
+	403 forbidden - quando o client não tem permissão no endpoint
+	404 not found - quando o endereço não é encontrado
+5xx Erro de servidor
+	500 - INternal server error
+	
+
+Swagger
+
+Framework usado para documentar sobre o funcionamento de cada um dos recursos api Rest. O Swagger faz com que a própria api se documente e se mantenha atualizada.
+Quais parâmetros nossas operações suportam;
+Qual o retorno;
+MediaType retornado: JSON, CSV, etc
+Modelo.
+
+
+Autenticação
+
+JWT - Json web token
+	
+Client --------------------------> Api Server
+         request de autenticação:
+         POST -> credenciais: ex: email e senha
+         
+                                   Processa, valida e gera um token (se as credenciais estiverem corretas)
+       <---------------------------
+       200 ok eyIUhsiuahIHDIUDHidHI
+
+O Client armazana o token e o envia como header nas requests em um parâmetro chamado Authorization
+
+Authorization: Bearer eyIUhsiuahIHDIUDHidHI...
+
+O Token é dividido em 3 blocos separados por ponto:
+
+Bloco 1: Cabeçalho
+Bloco 2: Informações
+Bloco 3: Assinatura criptografada do jwt para validação
+
+
+	
+
+
+
+
+
+
+
