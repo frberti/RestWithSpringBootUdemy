@@ -116,6 +116,51 @@ Bloco 2: Informações
 Bloco 3: Assinatura criptografada do jwt para validação
 
 
+
+Padrão VO -> Value Object (DTO)
+É um intermediário responsável em prover uma camada de segurança para a aplicação, no sentido de proteger a entidade do banco de dados com relação à exposição desses dados e consequentemente sua estrutura.
+
+VO tem o objetivo de não deixar que o client manipule a entidade diretamente. Com o VO, é possível esconder os dados que não são interessantes que o client manipule, como por exemplo, um GET em uma Entidade Pessoa, que pode trazer informações como username e password, ou um POST que permita alterar um dado que não deveria ser alterado.
+
+A arquitetura quando se utiliza o padrão VO tem essa característica:
+
+Para requests POST - Create:
+
+1: O Client envia no body da request um obj VO;
+2: O obj VO chega no Controller e é redirecionado para o Service;
+3: O Service possui as regras de negócio específicas para tal chamada e um conversor;
+4: O obj VO é convertido para Entidade;
+5: Após convertido, a Entidade é persistida no banco de dados através da chamada para o Repository.
+
+Para requests GET - FindAll ou FindById:
+
+1: O Client envia uma request;
+2: A request chega no Controller, que chama o Service, que por sua vez chama o Repository;
+3: O Repository vai até o banco de dados e traz as informações da Entidade para o Service;
+4: O Service recebe a Entidade e a converte em VO com apenas os dados que devem ser expostos para o Client, e retorna o VO para o Controller;
+5: O Controller devolve um response contendo o VO para o Client que o chamou.
+
+O VO é como uma interface entre Client e Api. O Client só conhece o VO, nunca deve ter acesso direto a Entidade.
+O VO encapsula as informações da base de dados.
+
+Convertendo Entidades em VOs com Dozer:
+
+1: Criar VO que representa a Entidade;
+2: Refatorar o Controller, substituindo as Entidades em VOs;
+3: Adicionar Dependency Dozer no pom.xml;
+4: Criar os packages .data.vo, .data.model, .converter para organizar o código/classes;
+5: Criar classe DozerConverter no package .converter;
+6: Criar atributos e métodos estáticos que serão utilizados para conversão de Entidade para VO e List<Entidade> para List<VO> no padrão Dozer.
+
+
+Versionamento dos Endpoints:
+
+
+
+
+
+
+
 	
 
 

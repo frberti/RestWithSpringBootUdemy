@@ -1,6 +1,5 @@
 package br.com.erudio.converter;
 
-import com.github.dozermapper.core.DozerBeanMapper;
 import com.github.dozermapper.core.DozerBeanMapperBuilder;
 import com.github.dozermapper.core.Mapper;
 
@@ -12,7 +11,9 @@ public class DozerConverter {
     private static Mapper mapper = DozerBeanMapperBuilder.buildDefault();
 
     public static <O, D> D parseObject(O origin, Class<D> destination){
-        return mapper.map(origin,destination);
+        D map = mapper.map(origin, destination);
+        return map;
+
     }
 
     public static <O, D> List<D> parseListObjects(List<O> originList, Class<D> destination){

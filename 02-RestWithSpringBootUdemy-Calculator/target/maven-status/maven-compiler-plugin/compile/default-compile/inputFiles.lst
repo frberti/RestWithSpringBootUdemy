@@ -1,0 +1,17 @@
+/home/francisco/Documentos/Cursos/Udemy/RestWithSpringBootUdemy/02-RestWithSpringBootUdemy-Calculator/src/main/java/br/com/erudio/repository/PersonRepository.java
+/home/francisco/Documentos/Cursos/Udemy/RestWithSpringBootUdemy/02-RestWithSpringBootUdemy-Calculator/src/main/java/br/com/erudio/service/OperationsService.java
+/home/francisco/Documentos/Cursos/Udemy/RestWithSpringBootUdemy/02-RestWithSpringBootUdemy-Calculator/src/main/java/br/com/erudio/data/vo/v2/PersonVOv2.java
+/home/francisco/Documentos/Cursos/Udemy/RestWithSpringBootUdemy/02-RestWithSpringBootUdemy-Calculator/src/main/java/br/com/erudio/exception/handler/CustomizedResponseEntityExceptionHandler.java
+/home/francisco/Documentos/Cursos/Udemy/RestWithSpringBootUdemy/02-RestWithSpringBootUdemy-Calculator/src/main/java/br/com/erudio/exception/ExceptionResponse.java
+/home/francisco/Documentos/Cursos/Udemy/RestWithSpringBootUdemy/02-RestWithSpringBootUdemy-Calculator/src/main/java/br/com/erudio/data/model/Person.java
+/home/francisco/Documentos/Cursos/Udemy/RestWithSpringBootUdemy/02-RestWithSpringBootUdemy-Calculator/src/main/java/br/com/erudio/converter/custom/PersonConverter.java
+/home/francisco/Documentos/Cursos/Udemy/RestWithSpringBootUdemy/02-RestWithSpringBootUdemy-Calculator/src/main/java/br/com/erudio/controller/MathController.java
+/home/francisco/Documentos/Cursos/Udemy/RestWithSpringBootUdemy/02-RestWithSpringBootUdemy-Calculator/src/main/java/br/com/erudio/conversor/Conversor.java
+/home/francisco/Documentos/Cursos/Udemy/RestWithSpringBootUdemy/02-RestWithSpringBootUdemy-Calculator/src/main/java/br/com/erudio/controller/PersonController.java
+/home/francisco/Documentos/Cursos/Udemy/RestWithSpringBootUdemy/02-RestWithSpringBootUdemy-Calculator/src/main/java/br/com/erudio/converter/DozerConverter.java
+/home/francisco/Documentos/Cursos/Udemy/RestWithSpringBootUdemy/02-RestWithSpringBootUdemy-Calculator/src/main/java/br/com/erudio/exception/ResourceNotFoundException.java
+/home/francisco/Documentos/Cursos/Udemy/RestWithSpringBootUdemy/02-RestWithSpringBootUdemy-Calculator/src/main/java/br/com/erudio/exception/UnsuportedMathOperationException.java
+/home/francisco/Documentos/Cursos/Udemy/RestWithSpringBootUdemy/02-RestWithSpringBootUdemy-Calculator/src/main/java/br/com/erudio/data/vo/PersonVO.java
+/home/francisco/Documentos/Cursos/Udemy/RestWithSpringBootUdemy/02-RestWithSpringBootUdemy-Calculator/src/main/java/br/com/erudio/Greeting.java
+/home/francisco/Documentos/Cursos/Udemy/RestWithSpringBootUdemy/02-RestWithSpringBootUdemy-Calculator/src/main/java/br/com/erudio/Startup.java
+/home/francisco/Documentos/Cursos/Udemy/RestWithSpringBootUdemy/02-RestWithSpringBootUdemy-Calculator/src/main/java/br/com/erudio/service/PersonService.java

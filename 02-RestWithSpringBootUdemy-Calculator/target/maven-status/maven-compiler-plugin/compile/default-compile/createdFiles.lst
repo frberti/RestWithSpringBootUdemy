@@ -1,0 +1,17 @@
+br/com/erudio/repository/PersonRepository.class
+br/com/erudio/service/PersonService.class
+br/com/erudio/converter/custom/PersonConverter.class
+br/com/erudio/exception/UnsuportedMathOperationException.class
+br/com/erudio/controller/PersonController.class
+br/com/erudio/data/model/Person.class
+br/com/erudio/exception/ExceptionResponse.class
+br/com/erudio/Greeting.class
+br/com/erudio/data/vo/PersonVO.class
+br/com/erudio/conversor/Conversor.class
+br/com/erudio/converter/DozerConverter.class
+br/com/erudio/exception/ResourceNotFoundException.class
+br/com/erudio/Startup.class
+br/com/erudio/exception/handler/CustomizedResponseEntityExceptionHandler.class
+br/com/erudio/service/OperationsService.class
+br/com/erudio/data/vo/v2/PersonVOv2.class
+br/com/erudio/controller/MathController.class
