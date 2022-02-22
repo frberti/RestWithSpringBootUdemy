@@ -154,6 +154,137 @@ Convertendo Entidades em VOs com Dozer:
 
 
 Versionamento dos Endpoints:
+O objetivo de versionamento de endpoints é oferecer um tempo de adaptação para que uma nova versão possa entrar em vigor.
+Isso se aplica, por exemplo, quando há necessidade de se fazer alguma alteração como adição, remoção, etc, de um campo da tabela.
+A nova implementação é introduzida no projeto, como uma nova versão (v2) de algum endpoint, e para não quebrar a api para o client que está consumindo a v1, ela é mantida por um período de tempo estabelecido até que ele migre para a v2.
+É possível fazer esse versionamento no próprio endpoint, com criação de novo endpoint e nova classe com a melhoria (adição, remoção e campo, etc) e nova implementação no Service. Ou, é possível criar um novo Controller, com a definição de versionamento na URL do RequestMapping.
+
+
+Migration - Flyway Maven Dependency:
+O Padrão Migration oferece a possibilidade de versionamento do banco de dados e maior controle pela aplicação.
+Para inserir migration, é necessário inserir a Dependency do Flyway no pom.xml.
+Além disso, no application.properties devem ser adicionadas:
+spring.flyway.url=jdbc:mysql://localhost:3306/ (url do banco de dados)
+spring.flyway.schemas=new_rest_with_spring_boot_udemy (nome da base de dados)
+spring.flyway.user=root 
+spring.flyway.password=admin123
+Devem ser criadas as pastas em resources: db/migration
+Devem ser adicionados os arquivos .sql com os comandos de criação da tabela, como também comandos para popular.
+O padrão da nomenclatura desses arquivos é:
+V1__Nome_do_Arquivo.sql
+O projeto deve subir através do git bash, pelo comando: mvn clean package spring-boot:run.
+
+
+Custom Json Serialization
+É utilizado para customizar o Json de retorno.
+@JsonPropertyOrder({"atributo1", "atributo2"}): quando adicionado acima do nome da class, ess anotação ordenará os atributos na ordem desejada.
+@JsonProperty("atributo_1"): permite que os nomes dos atributos sejam apresentados da forma definida.
+@JsonIgnore: omite algum campo que não seja interessante apresentar ao client no retorno do Json.
+
+
+Content Negotiation 
+Quando o servidor é server-driven significa que o server possibilita trabalhar (retornar) com diferentes media types, como Json, XML, pdf, etc ou idioma.
+Agent-driven (client): é quando o cliente escolhe consumir o serviço usando uma linguagem: en, es, pt, etc, e o  tipo de formato que ele quer ser respondido, desde que suportado/permitido pelo server.
+
+Cenário 1: primeiro será produzido e consumido json e porteriormente xml.
+
+Etapa 1: adicionar suporte a xml no pom através da dependência do jackson data format xml.
+Etapa 2: adicionar um package chamado config em br.com.erudio.
+Etapa 3: criar uma new class chamada WebConfig, com as anotações @Configuration e @EnableWebMvc, e implementar WebMvcConfigurer.
+
+Etapa 4: sobrescrever @Override o método configureContentNegotiation com as novas configurações, com isso, ocorrerá uma alteração que permitirá que o client adicione o formato de retorno na url, como por exemplo:
+GET: api/person/v1.xml
+GET: api/person/v1.json
+
+@Override
+public void configureContentNegotiation(ContentNegotiationConfigurer configurer){
+	configurer.favorParameter(false)
+		ignoreAcceptHeader(false) -> não será ignorado o que chegará no cabeçalho da request
+		defaultContentType(MediaType.APPLICATION_JSON) -> conteúdo padrão Json
+		mediaType("json", MediaType.APPLICATION_JSON) -> mediaType suportado
+		mediaType("xml", MediaType.APPLICATION_XML); -> mediaType suportado
+}
+
+Etapa 5: Customizar os métodos do Controller para que eles aceitem produzir e consumir Json e XML.
+	produces = {"application/json", "application/xml"}
+	consumes = {"application/json", "application/xml"}
+	
+	Para Get: produces.
+	Para Put e Post: produces e consumes.
+	
+	
+Configurando Content Negotiation via Query Param: path?mediaType=xml
+
+	Nova implementação do método configureContentNegotiation:
+	@Override
+	public void configureContentNegotiation(ContentNegotiationConfigurer configurer){
+		configurer.favorPathExtension(false) -> não vai aceitar parâmetro como extensão
+			.favorParameter(true) -> vai aceitar via favor parameter
+			.parameterName("mediaType")
+			.ignoreAcceptHeader(true) -> será ignorado o que chegará no cabeçalho da request
+			.useRegisteredExtensionOnly(false)
+			.defaultContentType(MediaType.APPLICATION_JSON) -> conteúdo padrão Json
+			.mediaType("json", MediaType.APPLICATION_JSON) -> mediaType suportado
+			.mediaType("xml", MediaType.APPLICATION_XML); -> mediaType suportado
+			
+
+
+Configurando Content Negotiation via Header Param: path?mediaType=xml
+
+Nova implementação do método configureContentNegotiation:
+@Override
+public void configureContentNegotiation(ContentNegotiationConfigurer configurer){
+	configurer.favorPathExtension(false) -> não vai aceitar parâmetro como extensão
+		.favorParameter(false) -> não vai aceitar via favor parameter
+		.ignoreAcceptHeader(false) -> não será ignorado o que chegará no cabeçalho da request
+		.useRegisteredExtensionOnly(false)
+		.defaultContentType(MediaType.APPLICATION_JSON) -> conteúdo padrão Json
+		.mediaType("json", MediaType.APPLICATION_JSON) -> mediaType suportado
+		.mediaType("xml", MediaType.APPLICATION_XML); -> mediaType suportado
+		
+No client/Postman o parâmetro é inserido na aba Header, com key Accepted e value application/json ou /xml e etc.
+
+Configurando Content Negotiation para suportar Yaml
+
+Adicionar dependência no pom:
+	<dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-xml</artifactId>
+        </dependency>
+
+Criação de package: .serialization.converter
+Criação de classe: YamlJackson2HttpMessageConverter extends AbstractJackson2HttpMessageConverter
+	implementação do contrutor:
+		public YamlJackson2HttpMessageConverter() {
+			super(new YAMLMapper(), MediaType.parseMediaType("application/x-yaml"));
+		}
+Adicionando configurações em WebConfig:
+	private static final MediaType MEDIA_TYPE_YML = MediaType.valueOf("application/x-yaml");
+	
+	public void extendMessageConverters(List<HttpMessageConverter<?>> converters){
+		converters.add(new YamlJackson2HttpMessageConverter());
+	}
+	
+	@Override
+	public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
+		configurer.favorPathExtension(false)
+		        .favorParameter(false)
+		        .ignoreAcceptHeader(false)
+		        .useRegisteredExtensionsOnly(false)
+		        .defaultContentType(MediaType.APPLICATION_JSON)
+		        .mediaType("json", MediaType.APPLICATION_JSON)
+		        .mediaType("xml", MediaType.APPLICATION_XML)
+		  --->  .mediaType("x-yaml", MEDIA_TYPE_YML);
+	}
+Adicionando yaml no Controller:
+	produces = {"application/json", "application/xml", "application/x-yaml"},
+	consumes = {"application/json", "application/xml", "application/x-yaml"}	
+		
+
+	
+
+
+
 
 
 
