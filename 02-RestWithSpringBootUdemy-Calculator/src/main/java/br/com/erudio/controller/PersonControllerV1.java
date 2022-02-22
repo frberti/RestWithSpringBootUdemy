@@ -1,5 +1,8 @@
 package br.com.erudio.controller;
 
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
+
 import br.com.erudio.data.vo.PersonVO;
 import br.com.erudio.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +28,9 @@ public class PersonControllerV1 {
     @GetMapping(value = "/{id}",
             produces = {"application/json", "application/xml", "application/x-yaml"})
     public PersonVO findById(@PathVariable ("id") Long id){
-        return service.findById(id);
+        PersonVO vo =  service.findById(id);
+        vo.add(linkTo(methodOn(PersonControllerV1.class).findById(id)).withSelfRel());
+        return vo;
     }
 
     @PostMapping(produces = {"application/json", "application/xml", "application/x-yaml"},

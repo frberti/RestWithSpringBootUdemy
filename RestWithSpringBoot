@@ -278,8 +278,56 @@ Adicionando configurações em WebConfig:
 	}
 Adicionando yaml no Controller:
 	produces = {"application/json", "application/xml", "application/x-yaml"},
-	consumes = {"application/json", "application/xml", "application/x-yaml"}	
+	consumes = {"application/json", "application/xml", "application/x-yaml"}
+	
+Client: Ao chamar no Postman, deve-se adicionar as key/values:
+	GET:
+	Accept - application/x-yaml
+	
+	POST:
+	Accept - application/x-yaml
+	Content-Type - application/x-yaml
+	Body-raw-text
+	---
+	  address: "Matão-SP-Brasil"
+	  first_name: "Bruce"
+	  last_name: "Berti"
+	  gender: "Male"
 		
+Inicialmente a api consumia e produzia apenas JSON, com essas novas implementações, a api está preparada para consumir JSON, XML e YAML.
+
+
+Adicionando Hateoas no projeto
+
+Adicionar dependência no pom.xml
+
+class VO: extends ResourceSupport
+	Alterar atributo o nome do atributo "id" para "key", pois ResourceSupport já tem definição própria de "id", ou seja, já tem um atributo 	chamado "id";
+	Inserir anotação @Mapping("id") do Dozer;
+	Ajustar getters/setters/equals/hashcode.
+	
+Ajustar classes que foram quebradas devido às alterações;
+Ajustar tests.
+
+class Startup:
+	Adicionar @EnableAutoConfiguration
+		Permite que o application context do Spring seja automaticamente carregado baseado nos jars e nas configs que foram definidas.
+	Adicionar @ComponentScan
+		Usada para informar ao Spring para escanear os nossos pacotes e encontrar arquivos de configs, como o WebConfig por exemplo.
+	Remover @EnableWebMvc de WebConfig para evitar problemas de serialização do jakcson.
+
+Ajustar o Controller:
+	Adicionar support ao hateoas no findById
+		pegar o retorno do findById e adicionar o link de auto relacionamento, correspendendo ao methodOn, especificando o próprio Controller, e passando o nome do método em questão, que recebe o id como parâmetro, e para finalizar, será indicado que é um link de auto relacionamento.
+	PersonVO vo = service.findById(id);
+	vo.add(linkTo(methodOn(PersonController.class).findById(id).withSelfRel())
+	retorn vo;
+	Com essa implementação, o withSelfRel pega o path Controller e adiciona um auto relacionamento, ou seja, um link para ele mesmo no método findById. 
+Ajustar os imports statics.
+
+
+
+	
 
 	
 
